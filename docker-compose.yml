@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # 1. 自动化编排工具 (n8n)
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: life_logger_n8n
+    restart: always
+    # 使用 5889 端口避免衝突 (容器内部仍為 5678)
+    ports:
+      - "5889:5678" 
+    volumes:
+      # 持久化存储 n8n 配置、凭证和工作流程
+      - ./n8n_data:/home/node/.n8n 
+    environment:
+      # n8n 主機設定
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+
+  # 2. 语言模型与视觉分析 (Ollama)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: life_logger_ollama
+    restart: always
+    # 使用 11436 端口避免衝突 (容器内部仍為 11434)
+    ports:
+      - "11436:11434" 
+    volumes:
+      # 持久化存储 LLM 和 Vision 模型文件
+      - ./ollama_models:/root/.ollama 
+    # 如果您的系統支持 GPU，請解除註釋以下部分來啟用加速
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  # 3. 日记数据存储 (Postgres - 可选)
+  postgres:
+    image: postgres:14
+    container_name: life_logger_postgres
+    restart: always
+    # 假設 5432 端口沒有衝突
+    ports:
+      - "5432:5432" 
+    environment:
+      # 從 .env 文件中引用資料庫變數
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      # 持久化存储資料庫記錄
+      - ./postgres_data:/var/lib/postgresql/data 
+    # 告訴 Docker 在啟動前載入同目錄下的 .env 檔案
+    env_file:
+      - .env

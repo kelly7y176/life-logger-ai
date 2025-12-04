@@ -1,0 +1,825 @@
+{
+  "name": "Life Logger AI: Daily Journal Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "toolDescription": "Gets the latest blog posts about any rss feed.",
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', `Use one of:\n- https://feeds.bbci.co.uk/news/world/rss.xml (BBC World – global headlines)\n- https://www.aljazeera.com/xml/rss/all.xml (Al Jazeera English – in‑depth global coverage)\n- http://rss.cnn.com/rss/edition_world.rss (CNN World – breaking news worldwide)\n- https://techcrunch.com/feed/ (TechCrunch – global tech & startup news)\n- http://news.ycombinator.com/rss (Hacker News – tech community headlines)\n- https://n8n.io/blog/rss (n8n Blog – updates & tutorials)\n- https://www.bonappetit.com/feed/recipes-rss-feed/rss (Bon Appétit – recent recipes list)\n- https://www.endsreport.com/rss/news-and-analysis (ENDS Report – environmental law & policy news)\n- https://medlineplus.gov/groupfeeds/new.xml (MedlinePlus – health topics & wellness updates)`, 'string') }}",
+        "options": {}
+      },
+      "id": "3f6a6c04-a585-4006-a134-0bc1d44b0ad9",
+      "cid": "Ikx1Y2FzIFBleXJpbiI",
+      "name": "Get News",
+      "type": "n8n-nodes-base.rssFeedReadTool",
+      "creator": "Lucas Peyrin",
+      "position": [
+        3376,
+        288
+      ],
+      "typeVersion": 1.2,
+      "notes": "© 2025 Lucas Peyrin"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get weather forecast anywhere, anytime. You can make requests by assuming most information, the only thing you need is the location (use the city name to infer lat and long automatically) and time period (assume today if not specified)",
+        "url": "https://api.open-meteo.com/v1/forecast",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "latitude",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Latitude of the location, e.g. 45.75 for Lyon. Do not ask the user just infer it automatically.`, 'string') }}"
+            },
+            {
+              "name": "longitude",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `Longitude of the location, e.g. 4.85 for Lyon. Do not ask the user just infer it automatically.`, 'string') }}"
+            },
+            {
+              "name": "current",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `Comma-separated list of current weather variables (no whitespace).\n\nExample: temperature_2m,windspeed_10m,rain.\n\nOptions: temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weathercode,cloudcover_total,pressure_msl,surface_pressure,windspeed_10m,winddirection_10m,windgusts_10m.`, 'string') }}"
+            },
+            {
+              "name": "hourly",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `Comma-separated list of hourly weather variables (no whitespace). Hourly is only useful to get one day's information. For weakly overview please use daily.\n\nExample: temperature_2m,precipitation.\n\nOptions: temperature_2m,relative_humidity_2m,dewpoint_2m,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,pressure_msl,surface_pressure,cloudcover_total,cloudcover_low,cloudcover_mid,cloudcover_high,windspeed_10m,winddirection_10m,windgusts_10m,visibility,is_day,sunshine_duration,soil_temperature,soil_moisture,PM10,PM2_5,carbon_monoxide,ozone,us_aqi,UV_index.`, 'string') }}"
+            },
+            {
+              "name": "daily",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Comma-separated list of daily weather variables (no whitespace).\n\nExample: temperature_2m_max,precipitation_sum.\n\nOptions: weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,sunrise,sunset,daylight_duration,sunshine_duration,pressure_msl_max,pressure_msl_min,surface_pressure_max,surface_pressure_min,windgusts_10m_max,windspeed_10m_max,winddirection_10m_dominant,shortwave_radiation_sum.`, 'string') }}"
+            },
+            {
+              "name": "start_date",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters5_Value', `Start date in YYYY-MM-DD format. Example: 2025-07-15`, 'string') }}"
+            },
+            {
+              "name": "end_date",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters6_Value', `End date in YYYY-MM-DD format. Must be after start_date. Example: 2025-07-18`, 'string') }}"
+            },
+            {
+              "name": "temperature_unit",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters7_Value', `Unit for temperature. Options: celsius (default), fahrenheit.`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9ff753dd-a934-4de6-9818-c6e0d8e703c8",
+      "cid": "Ikx1Y2FzIFBleXJpbiI",
+      "name": "Get Weather",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "creator": "Lucas Peyrin",
+      "position": [
+        3248,
+        288
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋",
+        "options": {
+          "inputPlaceholder": "Type your message here...",
+          "showWelcomeScreen": false,
+          "subtitle": "This is for demo purposes. Try me out !",
+          "title": "Your first AI Agent 🚀",
+          "responseMode": "lastNode"
+        }
+      },
+      "id": "6da2e814-d8a3-4d75-bf66-ebe13158fe3e",
+      "cid": "Ikx1Y2FzIFBleXJpbiI",
+      "name": "Example Chat",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "creator": "Lucas Peyrin",
+      "position": [
+        2528,
+        48
+      ],
+      "webhookId": "e5616171-e3b5-4c39-81d4-67409f9fa60a",
+      "typeVersion": 1.1,
+      "notes": "© 2025 Lucas Peyrin"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8b550a65-851a-403f-9ed6-a4d5e5563aa3",
+              "name": "=id",
+              "value": "={{ $('Download Image').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "c28b4744-db98-4c34-9a69-4b29e8e98bdc",
+              "name": "filename",
+              "value": "={{ $json.image_filename }}",
+              "type": "string"
+            },
+            {
+              "id": "b08c616b-d9f7-423e-9d18-2f90008a33c5",
+              "name": "=description",
+              "value": "={{ $json.image_description }}",
+              "type": "string"
+            },
+            {
+              "id": "1971eef9-48bc-4e28-90fb-d7a962296fcc",
+              "name": "downloadLink",
+              "value": "={{ $('Download Image').item.json.webContentLink }}",
+              "type": "string"
+            },
+            {
+              "id": "5252645b-45fc-4629-ace4-84b57ac9ec9c",
+              "name": "textForEmbedding",
+              "value": "={{ $json.text_for_embedding }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4144,
+        -256
+      ],
+      "id": "6ba20944-c2a6-432e-9d46-f62be4e20d13",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of items) {\n    \n    // 1. 變數初始化：使用 let 確保之後可以安全地處理空值，並從正確路徑獲取文本。\n    // 使用可選鏈 (?.): 如果路徑中的任一步是 undefined，則直接賦值為空字串 ('')\n    let fullText = item.json.content?.parts?.[0]?.text || ''; \n\n    // 檢查 fullText 是否存在且是字串\n    if (typeof fullText !== 'string' || fullText.length === 0) {\n        // 如果文字不存在，則設置預設值，避免錯誤\n        item.json.image_description = 'No analysis text found.';\n        item.json.image_filename = 'N/A';\n        item.json.text_for_embedding = 'No text.';\n        continue; // 跳到下一個項目\n    }\n\n    // 2. 文本分割邏輯 (這部分程式碼不再需要重複宣告)\n    const filenameMatch = fullText.match(/filename:\\s*(.*)/);\n\n    const filenameIndex = fullText.indexOf('filename:');\n    \n    let description = ''; // 新的變數，不會衝突\n    let filename = '';    // 新的變數，不會衝突\n\n    if (filenameIndex !== -1) {\n        description = fullText.substring(0, filenameIndex).trim();\n    } else {\n        description = fullText.trim();\n    }\n\n    if (filenameMatch && filenameMatch[1]) {\n        filename = filenameMatch[1].trim();\n    }\n\n    // 3. 將分離的數據存入新的 JSON 屬性\n    item.json.image_description = description;\n    item.json.image_filename = filename;\n    item.json.text_for_embedding = description; \n}\n\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3936,
+        -256
+      ],
+      "id": "4832ea05-e66f-4e2f-a373-8812576b905e",
+      "name": "Separate Description and Filename"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        4352,
+        -256
+      ],
+      "id": "2ce30395-0c02-453c-8d52-4de53a965c9d",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "kAjklsXYzKvyJILD",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=id",
+                "value": "={{ $('Edit Fields').item.json.id }}"
+              },
+              {
+                "name": "=name",
+                "value": "={{ $('Edit Fields').item.json.filename }}"
+              },
+              {
+                "name": "=downloadLink",
+                "value": "={{ $('Edit Fields').item.json.downloadLink }}"
+              },
+              {
+                "name": "=description",
+                "value": "={{ $('Edit Fields').item.json.description }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        4400,
+        48
+      ],
+      "id": "6701e4d2-d4de-4dc9-99e2-cb98974321c8",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        4352,
+        400
+      ],
+      "id": "cf85c083-415c-42c0-b0a7-76393eff5f40",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "9IYG0lkPaUq6HiO6",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use this knowledge base to answer questions from the user",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        2944,
+        304
+      ],
+      "id": "16de92c3-41ab-40ba-818b-5ce6cdd6536e",
+      "name": "Postgres PGVector Store2",
+      "credentials": {
+        "postgres": {
+          "id": "kAjklsXYzKvyJILD",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2736,
+        304
+      ],
+      "id": "f0307e6c-28bd-4918-8e86-d5fd4d5a66b5",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "9IYG0lkPaUq6HiO6",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/drive/v3/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "mimeType contains 'image/' and trashed = false"
+            },
+            {
+              "name": "fields",
+              "value": "=nextPageToken, files(id, name, mimeType, webContentLink, createdTime)"
+            },
+            {
+              "name": "pageSize",
+              "value": "1000"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2912,
+        -272
+      ],
+      "id": "1c006015-d089-4268-bd59-acf0d99198e2",
+      "name": "List Images from Drive",
+      "notesInFlow": false,
+      "credentials": {
+        "oAuth2Api": {
+          "id": "rOLqsQZpSpMxQ6Tk",
+          "name": "Unnamed credential"
+        },
+        "googleDriveOAuth2Api": {
+          "id": "mt6atyEJse27FUPL",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "files",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        3088,
+        -272
+      ],
+      "id": "51479ab9-72ad-4870-86ee-129ee8bb8f86",
+      "name": "Split Files"
+    },
+    {
+      "parameters": {
+        "batchSize": 8,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3296,
+        -272
+      ],
+      "id": "cc6b5000-a9ee-4bc8-ac5d-81788439cf03",
+      "name": "Batch Images"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "=ramdonly choose one image then analyze the image , Include locations, activities, emotions, and weather,\n\nAnalyze the image in depth , then you imagine you are the user. write a single, continuous paragraph, Write in first person, conversational tone, 200-300 words, include locations, activities, emotions, and weather. \n\nOutput Format: Write everything as one fluid, cohesive paragraph with no bullet points or line breaks.\n\n\nYou output must include Title, Date, Content three parts.\n\n** Title: ** this daily title\n** Date: **today date\n** Content: ** rite a single, continuous paragraph, Write in first person, conversational tone, 200-300 words, include locations, activities, emotions, and weather. \n\nEXAMPLE OUTPUT:\n\n\"\nTitle: laughed together at a restaurant table\nDate: {{$now }}\nContent: Today's morning is so cold, i laughed together at a restaurant table with pizza and wine with my friend, i really enjoy this moment. \"",
+        "inputType": "binary",
+        "binaryPropertyName": "image",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        3728,
+        -256
+      ],
+      "id": "d260f35b-cd78-44c6-adbb-bd03852f8d5d",
+      "name": "Gemini Vision Analysis",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "9IYG0lkPaUq6HiO6",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "image"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3536,
+        -256
+      ],
+      "id": "65096cf8-b5ab-4231-a259-6b806d36af63",
+      "name": "Download Image",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "mt6atyEJse27FUPL",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a writing Assistant for write my personal diary. You can answer user questions and fulfill their requests. You are conversational.\n\nRefer to the image desciption I gave to you in Postgres PGVector Store  . You can randomly choose 1 image inside the image. Then you need to analyze the image, Include locations, activities, emotions, and weather, and finally help me write today's visual diary. Include locations, activities, emotions, and weather. Write in first person, conversational tone, 200-300 words.\n\ndont descible too much of the weather or location, it is a daily , you should write more about what happenend and the emotion.\n\ndont output any word like \"hello Daily\". \n\nToday date is {{ $now.toFormat('LLLL dd, yyyy') }}. \n\nOutput Format: Write everything as one fluid, cohesive paragraph with no bullet points or line breaks.\n\n\nYou output must include Title, Date, Content three parts.\n\n**Title:** this daily title.\n**Date:**{{ $now.toFormat('LLLL dd, yyyy') }}.\n**Content:** rite a single, continuous paragraph, Write in first person, conversational tone, 200-300 words, include locations, activities, emotions, and weather. Write in first person, conversational tone, 200-300 words.\n\n\nYou have five primary tool:\n\n1. Today's weather you can find on this open-meteo.com api (link: https://api.open-meteo.com/v1/forecast).\n\n2. Google Calendar for you  check Today's activities.\n\n3. Google Drive for you to download the image (if you need)\n\n4. getting news in https://feeds.bbci.co.uk/news/world/rss.xml  (if you need)\n\n5. Postgres PGVector Store  for you to find image content.\n\nwhen you ready to output , upload your output to my google doc: https://docs.google.com/document/d/1VS9Jth0OqbLsSIL-6kz3brkw7EOi2LKTgRpjIemn2QM/edit?tab=t.0\n",
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        2736,
+        48
+      ],
+      "id": "bf8a302b-ef25-41ee-ba4d-41ef47c9101f",
+      "name": "Photo RAG Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "memory"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2832,
+        304
+      ],
+      "id": "cb0ef267-fad4-466c-978e-900603866c61",
+      "name": "Chat Memory (Postgres)",
+      "credentials": {
+        "postgres": {
+          "id": "kAjklsXYzKvyJILD",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 11
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        2528,
+        -272
+      ],
+      "id": "0e2cff93-1b0a-4ba5-afc9-c03a09150dac",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "kelly7y178@gmail.com",
+          "mode": "list",
+          "cachedResultName": "kelly7y178@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3520,
+        288
+      ],
+      "id": "8b6d022c-46f3-4357-8de6-b55fa18ba17d",
+      "name": "Get many events in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "qzbI54TCwV5p4VFV",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36409a61-a859-4874-bbd7-1622dec1ae7f",
+              "name": "skip",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "47425f43-8153-4031-93af-3b67100c0d51",
+              "name": "take",
+              "value": 1000,
+              "type": "number"
+            },
+            {
+              "id": "41b96d8c-f5a5-4aa3-a3ac-b9e5e42db023",
+              "name": "all_assets",
+              "value": "[]",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2720,
+        -272
+      ],
+      "id": "f9de9167-2941-48ea-9178-022b7e7e28b3",
+      "name": "Set Pagination Params"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('File', ``, 'string') }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTool",
+      "typeVersion": 3,
+      "position": [
+        3680,
+        288
+      ],
+      "id": "7488aa3b-b420-47de-baa4-84954e5c4f35",
+      "name": "Download file in Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "mt6atyEJse27FUPL",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1VS9Jth0OqbLsSIL-6kz3brkw7EOi2LKTgRpjIemn2QM/edit?tab=t.0",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('actionFields0_Text', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        3824,
+        288
+      ],
+      "id": "9a4dc403-e170-4938-9d1b-39fb1e1202f8",
+      "name": "Update a document in Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "QvU4uMz9cR1xxevv",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get News": {
+      "ai_tool": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Weather": {
+      "ai_tool": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Example Chat": {
+      "main": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separate Description and Filename": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Postgres PGVector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Images from Drive": {
+      "main": [
+        [
+          {
+            "node": "Split Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Files": {
+      "main": [
+        [
+          {
+            "node": "Batch Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Batch Images": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Vision Analysis": {
+      "main": [
+        [
+          {
+            "node": "Separate Description and Filename",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Gemini Vision Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo RAG Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Chat Memory (Postgres)": {
+      "ai_memory": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Pagination Params",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pagination Params": {
+      "main": [
+        [
+          {
+            "node": "List Images from Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file in Google Drive": {
+      "ai_tool": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document in Google Docs": {
+      "ai_tool": [
+        [
+          {
+            "node": "Photo RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3e063612-4806-467f-bd1e-a5fc5e7e4e64",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "70cde6912cea58aaa19ec5aa40b4ca0767ac5a177606bc4aaa515a3d351b9b12"
+  },
+  "id": "3jPtMksYpJanKa2W",
+  "tags": []
+}

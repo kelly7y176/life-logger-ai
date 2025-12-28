@@ -7,7 +7,7 @@
 - **Vision-to-Text:** Uses Gemini 2.5 Flash to analyze photos for emotions, activities, and locations.
 - **Contextual Awareness:** Integrates Google Calendar (schedules) and OpenWeatherMap (atmosphere).
 - **Vector Memory (RAG):** Stores photo descriptions in a PostgreSQL Vector database for intelligent retrieval.
-- **Automated Delivery:** Formats and appends entries to a Google Doc and sends notifications via Telegram.
+- **Automated Delivery:** Formats and appends entries to a Google Doc.
 
 ---
 
